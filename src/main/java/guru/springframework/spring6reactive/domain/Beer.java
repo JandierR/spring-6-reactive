@@ -28,6 +28,6 @@ public class Beer {
     @CreatedDate
     private LocalDateTime createdDate;
 
-    @LastModifiedDate()
+    @LastModifiedDate
     private LocalDateTime lastModifiedDate;
 }
