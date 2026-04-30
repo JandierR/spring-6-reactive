@@ -3,10 +3,11 @@ package guru.springframework.spring6reactive.controllers;
 
 import guru.springframework.spring6reactive.model.CustomerDTO;
 import guru.springframework.spring6reactive.services.CustomerService;
-import io.r2dbc.spi.Parameter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -20,7 +21,7 @@ public class CustomerController {
     private final CustomerService customerService;
 
     @GetMapping(CUSTOMER_PATH_ID)
-    Mono<CustomerDTO> getCustomerById(@PathVariable Integer customerId) {
+    Mono<CustomerDTO> getCustomerById( @PathVariable Integer customerId) {
         return customerService.getCustomerById(customerId);
     }
 
@@ -30,24 +31,32 @@ public class CustomerController {
     }
 
     @PostMapping(CUSTOMER_PATH)
-    Mono<CustomerDTO> createNewCustomer(@Validated @RequestBody CustomerDTO customerDTO) {
-        return customerService.createNewCustomer(customerDTO);
+    Mono<ResponseEntity<Void>> createNewCustomer(@Validated @RequestBody CustomerDTO customerDTO) {
+        return customerService.createNewCustomer(customerDTO)
+                .map(savedDto -> ResponseEntity.created(UriComponentsBuilder
+                        .fromUriString("http://localhost:8080" + CUSTOMER_PATH
+                        + "/" + savedDto.getId())
+                        .build().toUri())
+                        .build());
     }
 
     @PutMapping(CUSTOMER_PATH_ID)
-    Mono<CustomerDTO> updateCustomer(@PathVariable Integer customerId,
+    Mono<ResponseEntity<Void>> updateCustomer(@PathVariable Integer customerId,
                                      @Validated @RequestBody CustomerDTO customerDTO) {
-        return customerService.updateCustomer(customerId, customerDTO);
+        return customerService.updateCustomer(customerId, customerDTO)
+                .map(response -> ResponseEntity.ok().build());
     }
 
     @PatchMapping(CUSTOMER_PATH_ID)
-    Mono<CustomerDTO> patchCustomer(@PathVariable Integer customerId,
+    Mono<ResponseEntity<Void>> patchCustomer(@PathVariable Integer customerId,
                                     @Validated @RequestBody CustomerDTO customerDTO) {
-        return customerService.patchCustomer(customerId, customerDTO);
+        return customerService.patchCustomer(customerId, customerDTO)
+                .map(response -> ResponseEntity.ok().build());
     }
 
     @DeleteMapping(CUSTOMER_PATH_ID)
-    Mono<Void> deleteCustomer(@PathVariable Integer customerId) {
-        return customerService.deleteCustomer(customerId);
+    Mono<ResponseEntity<Void>> deleteCustomer(@PathVariable Integer customerId) {
+        return customerService.deleteCustomer(customerId).map(response -> ResponseEntity
+                .noContent().build());
     }
 }
