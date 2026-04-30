@@ -32,4 +32,9 @@ public class CustomerController {
     Mono<CustomerDTO> createNewCustomer(@Validated @RequestBody CustomerDTO customerDTO) {
         return customerService.createNewCustomer(customerDTO);
     }
+
+    @PutMapping(CUSTOMER_PATH_ID)
+    Mono<CustomerDTO> updateCustomer( @PathVariable Integer customerId, @Validated @RequestBody CustomerDTO customerDTO) {
+        return customerService.updateCustomer(customerId, customerDTO);
+    }
 }

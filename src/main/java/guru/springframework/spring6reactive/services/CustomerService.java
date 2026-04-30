@@ -11,4 +11,6 @@ public interface CustomerService {
     Flux<CustomerDTO> listCustomers();
 
     Mono<CustomerDTO> createNewCustomer(CustomerDTO customerDTO);
+
+    Mono<CustomerDTO> updateCustomer(Integer customerId, CustomerDTO customerDTO);
 }
