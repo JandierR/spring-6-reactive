@@ -18,6 +18,24 @@ public class BeerController {
 
     private final BeerService beerService;
 
+    @PatchMapping(BEER_PATH_ID)
+    Mono<BeerDTO> patchExistingBeer(@PathVariable Integer beerId,
+                                           @RequestBody BeerDTO beerDTO) {
+//        beerService.patchBeer(beerId, beerDTO).subscribe();
+
+        return beerService.patchBeer(beerId, beerDTO);
+//        return ResponseEntity.ok().build();
+
+    }
+
+    @PutMapping(BEER_PATH_ID)
+    ResponseEntity<Void> updateExistingBeer(@PathVariable Integer beerId,
+                                                  @RequestBody BeerDTO beerDTO) {
+         beerService.updateBeer(beerId, beerDTO).subscribe();
+
+        return ResponseEntity.ok().build();
+    }
+
     @PostMapping(BEER_PATH)
     Mono<ResponseEntity<Void>> createNewBeer(@RequestBody BeerDTO beerDTO) {
        return beerService.saveNewBeer(beerDTO)
