@@ -34,7 +34,14 @@ public class CustomerController {
     }
 
     @PutMapping(CUSTOMER_PATH_ID)
-    Mono<CustomerDTO> updateCustomer( @PathVariable Integer customerId, @Validated @RequestBody CustomerDTO customerDTO) {
+    Mono<CustomerDTO> updateCustomer( @PathVariable Integer customerId,
+                                      @Validated @RequestBody CustomerDTO customerDTO) {
         return customerService.updateCustomer(customerId, customerDTO);
+    }
+
+    @PatchMapping(CUSTOMER_PATH_ID)
+    Mono<CustomerDTO> patchCustomer(@PathVariable Integer customerId,
+                                    @Validated @RequestBody CustomerDTO customerDTO) {
+        return customerService.patchCustomer(customerId, customerDTO);
     }
 }
