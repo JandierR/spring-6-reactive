@@ -4,9 +4,9 @@ package guru.springframework.spring6reactive.controllers;
 import guru.springframework.spring6reactive.model.CustomerDTO;
 import guru.springframework.spring6reactive.services.CustomerService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @RequiredArgsConstructor
@@ -23,4 +23,13 @@ public class CustomerController {
         return customerService.getCustomerById(customerId);
     }
 
+    @GetMapping(CUSTOMER_PATH)
+    Flux<CustomerDTO> listCustomers() {
+        return customerService.listCustomers();
+    }
+
+    @PostMapping(CUSTOMER_PATH)
+    Mono<CustomerDTO> createNewCustomer(@Validated @RequestBody CustomerDTO customerDTO) {
+        return customerService.createNewCustomer(customerDTO);
+    }
 }
