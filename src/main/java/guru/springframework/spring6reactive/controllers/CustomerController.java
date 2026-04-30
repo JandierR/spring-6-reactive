@@ -3,6 +3,7 @@ package guru.springframework.spring6reactive.controllers;
 
 import guru.springframework.spring6reactive.model.CustomerDTO;
 import guru.springframework.spring6reactive.services.CustomerService;
+import io.r2dbc.spi.Parameter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -34,8 +35,8 @@ public class CustomerController {
     }
 
     @PutMapping(CUSTOMER_PATH_ID)
-    Mono<CustomerDTO> updateCustomer( @PathVariable Integer customerId,
-                                      @Validated @RequestBody CustomerDTO customerDTO) {
+    Mono<CustomerDTO> updateCustomer(@PathVariable Integer customerId,
+                                     @Validated @RequestBody CustomerDTO customerDTO) {
         return customerService.updateCustomer(customerId, customerDTO);
     }
 
@@ -43,5 +44,10 @@ public class CustomerController {
     Mono<CustomerDTO> patchCustomer(@PathVariable Integer customerId,
                                     @Validated @RequestBody CustomerDTO customerDTO) {
         return customerService.patchCustomer(customerId, customerDTO);
+    }
+
+    @DeleteMapping(CUSTOMER_PATH_ID)
+    Mono<Void> deleteCustomer(@PathVariable Integer customerId) {
+        return customerService.deleteCustomer(customerId);
     }
 }
