@@ -22,12 +22,13 @@ public class BeerController {
     @DeleteMapping(BEER_PATH_ID)
     Mono<ResponseEntity<Void>> deleteById(@PathVariable Integer beerId) {
         return beerService.deleteBeerById(beerId)
-                .map(response -> ResponseEntity.noContent().build());
+                .thenReturn(ResponseEntity
+                        .noContent().build());
     }
 
     @PatchMapping(BEER_PATH_ID)
     Mono<ResponseEntity<Void>> patchExistingBeer(@PathVariable Integer beerId,
-                                    @Validated @RequestBody BeerDTO beerDTO) {
+                                                 @Validated @RequestBody BeerDTO beerDTO) {
 
 //        beerService.patchBeer(beerId, beerDTO).subscribe();
 
@@ -41,7 +42,7 @@ public class BeerController {
 
     @PutMapping(BEER_PATH_ID)
     Mono<ResponseEntity<Void>> updateExistingBeer(@PathVariable Integer beerId,
-                                                 @Validated @RequestBody BeerDTO beerDTO) {
+                                                  @Validated @RequestBody BeerDTO beerDTO) {
 //         beerService.updateBeer(beerId, beerDTO).subscribe();
 //        return ResponseEntity.ok().build();
 
@@ -51,12 +52,12 @@ public class BeerController {
 
     @PostMapping(BEER_PATH)
     Mono<ResponseEntity<Void>> createNewBeer(@Validated @RequestBody BeerDTO beerDTO) {
-       return beerService.saveNewBeer(beerDTO)
-               .map(savedDto-> ResponseEntity.created(UriComponentsBuilder
-                       .fromUriString("http://localhost:8080" + BEER_PATH
-                               + "/" + savedDto.getId())
-                       .build().toUri())
-                       .build());
+        return beerService.saveNewBeer(beerDTO)
+                .map(savedDto -> ResponseEntity.created(UriComponentsBuilder
+                                .fromUriString("http://localhost:8080" + BEER_PATH
+                                        + "/" + savedDto.getId())
+                                .build().toUri())
+                        .build());
     }
 
     @GetMapping(BEER_PATH_ID)

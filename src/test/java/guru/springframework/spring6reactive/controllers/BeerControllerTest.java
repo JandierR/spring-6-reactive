@@ -18,6 +18,14 @@ class BeerControllerTest {
 
 
     @Test
+    void testDeleteBeer() {
+        webTestClient.delete()
+                .uri(BeerController.BEER_PATH_ID, 1)
+                .exchange()
+                .expectStatus().isNoContent();
+    }
+
+    @Test
     void testUpdateBeer() {
         webTestClient.put()
                 .uri(BeerController.BEER_PATH_ID, 1)
