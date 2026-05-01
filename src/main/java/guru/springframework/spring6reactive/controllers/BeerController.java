@@ -49,6 +49,7 @@ public class BeerController {
 //        return ResponseEntity.ok().build();
 
         return beerService.updateBeer(beerId, beerDTO)
+                .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
                 .map(savedDto -> ResponseEntity.noContent().build());
     }
 
