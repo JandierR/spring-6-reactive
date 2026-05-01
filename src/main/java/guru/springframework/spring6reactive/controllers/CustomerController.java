@@ -44,19 +44,19 @@ public class CustomerController {
     Mono<ResponseEntity<Void>> updateCustomer(@PathVariable Integer customerId,
                                      @Validated @RequestBody CustomerDTO customerDTO) {
         return customerService.updateCustomer(customerId, customerDTO)
-                .map(response -> ResponseEntity.ok().build());
+                .map(response -> ResponseEntity.noContent().build());
     }
 
     @PatchMapping(CUSTOMER_PATH_ID)
     Mono<ResponseEntity<Void>> patchCustomer(@PathVariable Integer customerId,
                                     @Validated @RequestBody CustomerDTO customerDTO) {
         return customerService.patchCustomer(customerId, customerDTO)
-                .map(response -> ResponseEntity.ok().build());
+                .map(response -> ResponseEntity.noContent().build());
     }
 
     @DeleteMapping(CUSTOMER_PATH_ID)
     Mono<ResponseEntity<Void>> deleteCustomer(@PathVariable Integer customerId) {
-        return customerService.deleteCustomer(customerId).map(response -> ResponseEntity
+        return customerService.deleteCustomer(customerId).thenReturn(ResponseEntity
                 .noContent().build());
     }
 }
