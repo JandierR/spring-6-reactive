@@ -1,7 +1,6 @@
 package guru.springframework.spring6reactive.controllers;
 
 import guru.springframework.spring6reactive.domain.Customer;
-import guru.springframework.spring6reactive.model.BeerDTO;
 import guru.springframework.spring6reactive.model.CustomerDTO;
 import guru.springframework.spring6reactive.repositories.CustomerRepositoryTest;
 import org.junit.jupiter.api.MethodOrderer;
@@ -33,9 +32,11 @@ class CustomerControllerTest {
     @Test
     @Order(999)
     void testDeleteCustomer() {
-        webTestClient.delete().uri(CustomerController.CUSTOMER_PATH_ID, 1)
+        webTestClient.delete()
+                .uri(CustomerController.CUSTOMER_PATH_ID, 2)
                 .exchange()
-                .expectStatus().isNoContent();
+                .expectStatus()
+                .isNoContent();
     }
 
     @Test
@@ -63,7 +64,7 @@ class CustomerControllerTest {
         testCustomer.setCustomerName("");
 
         webTestClient.put()
-                .uri(BeerController.BEER_PATH_ID, 1)
+                .uri(CustomerController.CUSTOMER_PATH_ID, 1)
                 .body(Mono.just(testCustomer), CustomerDTO.class)
                 .exchange()
                 .expectStatus().isBadRequest();
@@ -94,10 +95,10 @@ class CustomerControllerTest {
     @Test
     void testCreateCustomer() {
         webTestClient.post().uri(CustomerController.CUSTOMER_PATH)
-                .body(Mono.just(CustomerRepositoryTest.getTestCustomer()), BeerDTO.class)
+                .body(Mono.just(CustomerRepositoryTest.getTestCustomer()), CustomerDTO.class)
                 .exchange()
                 .expectStatus().isCreated()
-                .expectHeader().location("http://localhost:8080/api/v2/customer/null");
+                .expectHeader().location("http://localhost:8080/api/v2/customer/4");
 
     }
 

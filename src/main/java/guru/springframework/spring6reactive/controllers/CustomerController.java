@@ -24,7 +24,8 @@ public class CustomerController {
 
     @GetMapping(CUSTOMER_PATH_ID)
     Mono<CustomerDTO> getCustomerById( @PathVariable Integer customerId) {
-        return customerService.getCustomerById(customerId).switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)));
+        return customerService.getCustomerById(customerId)
+                .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)));
     }
 
     @GetMapping(CUSTOMER_PATH)
@@ -62,6 +63,7 @@ public class CustomerController {
     Mono<ResponseEntity<Void>> deleteCustomer(@PathVariable Integer customerId) {
         return customerService.getCustomerById(customerId)
                 .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
+                .map(customerDTO -> customerService.deleteCustomer(customerDTO.getId()))
                 .thenReturn(ResponseEntity
                 .noContent().build());
     }
