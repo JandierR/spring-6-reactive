@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 
 @DataR2dbcTest
 @Import({DatabaseConfig.class})
-class BeerRepositoryTest {
+public class BeerRepositoryTest {
 
     @Autowired
     BeerRepository beerRepository;
@@ -31,7 +31,7 @@ class BeerRepositoryTest {
 
     }
 
-    Beer getTestBeer() {
+   public static Beer getTestBeer() {
         return Beer.builder()
                 .beerName("Space Dust")
                 .beerStyle("IPA")
